@@ -1,5 +1,6 @@
 INCLUDE "hardware.inc"
 include "utils.asm"
+include "input.asm"
 
 SECTION "Header", ROM0[$100]
 
@@ -12,7 +13,7 @@ EntryPoint:
     ld a, 0
     ld [rNR52], a
 	; Do not turn the LCD off outside of VBlank
-    WaitVBlank:
+WaitVBlank:
 	ld a, [rLY]
 	cp 144
 	jp c, WaitVBlank
@@ -25,43 +26,23 @@ EntryPoint:
 	ld de, Tiles
 	ld hl, $9000
 	ld bc, TilesEnd - Tiles
-CopyTiles:
-	ld a, [de]
-	ld [hli], a
-	inc de
-	dec bc
-	ld a, b
-	or a, c
-	jp nz, CopyTiles
+	call MemCopy
 
 	; Copy the tilemap
 	ld de, Tilemap
 	ld hl, $9800
 	ld bc, TilemapEnd - Tilemap
-CopyTilemap:
-	ld a, [de]
-	ld [hli], a
-	inc de
-	dec bc
-	ld a, b
-	or a, c
-	jp nz, CopyTilemap
+	call MemCopy
 
 	; Copy the tile data
 	ld de, Paddle
 	ld hl, $8000
 	ld bc, PaddleEnd - Paddle
-CopyPaddle:
-	ld a, [de]
-	ld [hli], a
-	inc de
-	dec bc
-	ld a, b
-	or a, c
-	jp nz, CopyPaddle
+	call MemCopy
 
-	call ClearOamFunc
+	call ClearOam
 
+	;Set data of first dummy sprite
 	ld hl, _OAMRAM
 	ld a, 128 + 16
 	ld [hli], a
@@ -71,7 +52,6 @@ CopyPaddle:
 	ld [hli], a
 	ld [hl], a
 	
-
 	; Turn the LCD on
 	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
 	ld [rLCDC], a
@@ -94,9 +74,44 @@ WaitVBlank2: ; skip 0 - 144
     cp 144
     jp c, WaitVBlank2
 
+	call UpdateKeys
+
+CheckLeft:
+	ld a, [wCurrentKeys]
+	and a, PADF_LEFT
+	jp z, CheckRight
+Left:
+	ld a, [_OAMRAM + 1]
+	dec a
+	cp a, 7
+	jp z, Main
+	ld [_OAMRAM + 1], a
+	jp Main
+CheckRight:
+	ld a, [wCurrentKeys]
+	and a, PADF_RIGHT
+	jp z, Main
+Right:
 	ld a, [_OAMRAM + 1]
 	inc a
+	cp a, 160
+	jp z, Main
 	ld [_OAMRAM + 1], a
+	jp Main
+
+	;przesuwanie sprite
+	; ld a, [wFrameCounter]
+	; inc a
+	; ld [wFrameCounter], a
+	; cp a, 15
+	; jp nz, Main
+
+	; ld a, 0
+	; ld [wFrameCounter], a
+
+	; ld a, [_OAMRAM + 1]
+	; inc a
+	; ld [_OAMRAM + 1], a
 
 	jp Main
 
@@ -201,11 +216,14 @@ TilemapEnd:
 
 Paddle:
     dw `13333331
-    dw `30000003
     dw `13333331
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
+    dw `13333331
+    dw `13333331
+    dw `13333331
+    dw `13333331
+    dw `13333331
+    dw `13333331
 PaddleEnd:
+
+section "Counter", wram0
+wFrameCounter: db
