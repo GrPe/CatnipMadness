@@ -31,3 +31,35 @@ MemCopy:
     or a, c
     jp nz, MemCopy
     ret;
+
+; Check collision between 2 objects
+; @param bc: 1st OAM
+; @param de: 2st OAM
+; returns h: 0 = no collision, 1 = collision
+CheckCollision:
+    ; y coordinates
+    ld a, [bc]
+    ld h, a
+    ld a, [de]
+    cp a, h
+    jp nz, .noCollision
+    ; x coordinates
+    inc bc
+    ld a, [bc]
+    ld h, a
+    inc de
+    ld a, [de]
+    sub a, 8
+    cp a, h
+    jp nc, .noCollision ; (a - 8 < h)
+    add a, 8 + 8
+    cp a, h
+    jp c, .noCollision ; (a + 8 > h)
+    ld a, 1
+    ld h, a
+    ret
+
+.noCollision:
+    ld a, 0
+    ld h, a
+    ret

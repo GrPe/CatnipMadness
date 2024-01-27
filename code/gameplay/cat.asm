@@ -1,9 +1,5 @@
 section "Cat", rom0
 
-DEF ENEMY_TILE EQU $01
-DEF ENEMY_OAM_0 EQU _OAMRAM + 4
-DEF ENEMY_OAM_1 EQU _OAMRAM + 8
-
 SetupEnemies:
 	; Set cat sprite
 	ld hl, ENEMY_OAM_0
@@ -31,14 +27,26 @@ SetupEnemies:
 
 UpdateEnemy:
 
+	;Collision cat vs ground
+.cat0Momevent:
+	ld a, [ENEMY_OAM_0]
+	cp GROUND_LEVEL
+	jp z, .cat1Movement
+
 	; falling cat
 	ld a, [ENEMY_OAM_0]
 	inc a
 	ld [ENEMY_OAM_0], a
 
+.cat1Movement:
+	ld a, [ENEMY_OAM_1]
+	cp GROUND_LEVEL
+	jp z, .catsEnd 
+	
 	; falling cat 2
 	ld a, [ENEMY_OAM_1]
 	inc a
 	ld [ENEMY_OAM_1], a
 
+.catsEnd:
 	ret
