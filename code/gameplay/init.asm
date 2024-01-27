@@ -23,7 +23,7 @@ InitGameState:
 
 	; Copy the cat tiles
 	ld de, Cat
-	ld hl, $8010
+	ld hl, $8020
 	ld bc, CatEnd - Cat
 	call MemCopy
 

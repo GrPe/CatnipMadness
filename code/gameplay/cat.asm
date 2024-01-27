@@ -195,7 +195,7 @@ HandlePlayerCatch:
 	ld a, [wPlayerScore]
 	inc a
 	ld [wPlayerScore], a
-	;jp UpdateEnemy_PerCat_RemoveCat
+	jp UpdateEnemy_PerCat_RemoveCat
 
 UpdateEnemy_PerCat_CheckGroundCollision:
 	ld a, [wCurrentCatY]

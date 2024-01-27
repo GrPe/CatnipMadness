@@ -37,7 +37,7 @@ EntryPoint:
 	call InitGameState
 	
 	; Turn the LCD on
-	ld a, LCDCF_BGON | LCDCF_OBJON | LCDCF_OBJ8 | LCDCF_ON
+	ld a, LCDCF_BGON | LCDCF_OBJON | LCDCF_OBJ16 | LCDCF_ON
 	ld [rLCDC], a
 
 	; During the first (blank) frame, initialize display registers
