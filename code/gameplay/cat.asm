@@ -26,6 +26,13 @@ SetupEnemies_Loop:
 	ld a, 0
 	ld [hl], a
 
+	push hl
+	ld de, cat_speed
+	add hl, de
+	ld a, CAT_BASE_SPEED
+	ld [hl], a
+	pop hl
+
 	; Increase the address
 	ld a, l
 	add a, PER_CAT_BYTES_COUNT
@@ -112,7 +119,7 @@ UpdateEnemy_SpawnNewEnemy:
 
 	; set y to 0
 	ld a, 0
-	ld [hl], a
+	ld [hli], a
 
 	; clear variable - do not create next cat
 	ld a, 0
@@ -138,14 +145,14 @@ UpdateEnemy_PerCat_Update:
 
 	; get x pos
 	inc hl
-	ld a, [hl]
+	ld a, [hli]
 	ld b, a
 	ld [wCurrentCatX], a
 
 	; get and increase y pos by speed
 	ld a, [hl]
 	add a, e
-	ld [hli], a
+	ld [hl], a
 	ld d, a
 
 	pop hl
@@ -180,6 +187,8 @@ UpdateEnemy_PerCat_NoCollision:
 	; get cat's OAM pos
 	ld hl, ENEMY_OAM
 	ld a, [wUpdateCatCounter]
+	rlca 
+	rlca ; current cat * 4 (size of OAM)
 	ld c, a
 	ld a, 0
 	ld b, a

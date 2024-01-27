@@ -67,7 +67,7 @@ CheckCollision:
 
 .noCollision:
     ld a, 0
-    ld h, a
+    ld [wResult], a
     ret
 
 
