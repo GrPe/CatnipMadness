@@ -1,39 +1,46 @@
+SECTION "PlayerVariables", WRAM0
+wPlayerPositionX:: dw
+wPlayerPositionY:: dw
+
 section "Player", rom0
 
 SetupPlayer:
-	;Set data of first dummy sprite
-	ld hl, PLAYER_OAM
-	ld a, 128 + 16
-	ld [hli], a
 	ld a, 16 + 8
-	ld [hli], a
-	ld a, PLAYER_TILE
-	ld [hli], a
-	ld [hl], a
-
+	ld [wPlayerPositionX], a
+	ret
 
 UpdatePlayer:
+	call HandlePlayerInput
 
+	ld b, 128
+	ld a, [wPlayerPositionX]
+	ld c, a
+	ld d, PLAYER_TILE
+	ld e, 0
+	call RenderSimpleSprite
+	ret
+
+HandlePlayerInput:
 ; Handle player movement
 .checkLeft:
 	ld a, [wCurrentKeys]
 	and a, PADF_LEFT
 	jp z, .checkRight
 .left:
-	ld a, [_OAMRAM + 1]
+	ld a, [wPlayerPositionX]
 	dec a
 	cp a, PLAYER_MAX_LEFT
 	ret z
-	ld [_OAMRAM + 1], a
+	ld [wPlayerPositionX], a
 	ret
 .checkRight:
 	ld a, [wCurrentKeys]
 	and a, PADF_RIGHT
 	ret z
 .right:
-	ld a, [_OAMRAM + 1]
+	ld a, [wPlayerPositionX]
 	inc a
 	cp a, PLAYER_MAX_RIGHT
 	ret z
-	ld [_OAMRAM + 1], a
+	ld [wPlayerPositionX], a
 	ret

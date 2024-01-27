@@ -7,6 +7,7 @@ include "gameplay/gameplay.asm"
 include "gameplay/player.asm"
 include "gameplay/cat.asm"
 include "gameplay/sprawner.asm"
+include "libs/gb-sprobj.asm"
 
 SECTION "Header", ROM0[$100]
 
@@ -21,14 +22,21 @@ EntryPoint:
 
 	call WaitVBlank
 
+	call InitSprObjLib
+    call ClearOam	
+
 	; Turn the LCD off
 	ld a, 0
 	ld [rLCDC], a
 
+	ld a, 0
+	ldh [rSTAT], a
+	di
+
 	call InitGameState
 	
 	; Turn the LCD on
-	ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
+	ld a, LCDCF_BGON | LCDCF_OBJON | LCDCF_OBJ8 | LCDCF_ON
 	ld [rLCDC], a
 
 	; During the first (blank) frame, initialize display registers
@@ -41,14 +49,25 @@ EntryPoint:
 
 Main:
     ; Wait until it's *not* VBlank
-    ld a, [rLY] ; just burn the rest of cpu time
+    ld a, [rLY]
     cp 144
     jp nc, Main
+WaitVBlank2:
+    ld a, [rLY]
+    cp 144
+    jp c, WaitVBlank2
 
-	call WaitVBlank
+	;call DrawEnemies
 	call UpdateKeys
 
+	call ResetShadowOAM
+
 	call UpdatePlayer
-	call UpdateEnemy
+	;call UpdateEnemy
+
+	call WaitVBlank
+
+	ld a, HIGH(wShadowOAM)
+	call hOAMDMA
 
 	jp Main

@@ -17,8 +17,63 @@ SetupEnemies:
 	ld [wSpawnCounter], a
 	ld [wNextCatXPosition], a
 	ld [wActiveCatCounter], a
+	ld [wUpdateCatCounter], a
 	ld b, 0
 	ld hl, wCats
+
+	ld hl, ENEMY_OAM
+	ld a, 0
+	ld [hli], a
+	ld [hli], a
+	ld a, ENEMY_TILE
+	ld [hli], a
+	xor a, a
+	ld [hl], a
+
+	ld hl, ENEMY_OAM + 4
+	ld a, 0
+	ld [hli], a
+	ld [hli], a
+	ld a, ENEMY_TILE
+	ld [hli], a
+	xor a, a
+	ld [hl], a
+
+	ld hl, ENEMY_OAM + 8
+	ld a, 0
+	ld [hli], a
+	ld [hli], a
+	ld a, ENEMY_TILE
+	ld [hli], a
+	xor a, a
+	ld [hl], a
+
+	ld hl, ENEMY_OAM + 12
+	ld a, 0
+	ld [hli], a
+	ld [hli], a
+	ld a, ENEMY_TILE
+	ld [hli], a
+	xor a, a
+	ld [hl], a
+
+	ld hl, ENEMY_OAM + 16
+	ld a, 0
+	ld [hli], a
+	ld [hli], a
+	ld a, ENEMY_TILE
+	ld [hli], a
+	xor a, a
+	ld [hl], a
+
+	ld hl, ENEMY_OAM + 20
+	ld a, 0
+	ld [hli], a
+	ld [hli], a
+	ld a, ENEMY_TILE
+	ld [hli], a
+	xor a, a
+	ld [hl], a
 
 SetupEnemies_Loop:
 
@@ -50,6 +105,7 @@ SetupEnemies_Loop:
 	ret z
 
 	jp SetupEnemies_Loop
+	ret
 
 UpdateEnemy:
 
@@ -151,7 +207,7 @@ UpdateEnemy_PerCat_Update:
 
 	; get and increase y pos by speed
 	ld a, [hl]
-	add a, e
+	add a, CAT_BASE_SPEED
 	ld [hl], a
 	ld d, a
 
@@ -184,39 +240,97 @@ UpdateEnemy_PerCat_CheckGroundCollision:
 	
 UpdateEnemy_PerCat_NoCollision:
 	push hl
-	; get cat's OAM pos
-	ld hl, ENEMY_OAM
-	ld a, [wUpdateCatCounter]
-	rlca 
-	rlca ; current cat * 4 (size of OAM)
-	ld c, a
-	ld a, 0
-	ld b, a
-	add hl, bc
 
-	; set pos and tile
-	ld a, [wCurrentCatY]
-	ld [hli], a
+	inc hl
 	ld a, [wCurrentCatX]
 	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hl], a
+	ld a, [wCurrentCatY]
+	ld [hli], a
 
 	pop hl
+
 	jp UpdateEnemy_Loop
 
 UpdateEnemy_PerCat_RemoveCat:
 
 	;set inactive and clear x pos
-	; ld a, 0
-	; ld [hli], a
-	; ld [hl], a
+	ld a, 0
+	ld [hli], a
+	ld a, 0
+	ld [hli], a
+	ld a, 0
+	ld [hl], a
 
-	; ; decreate cat counter
-	; ld a, [wActiveCatCounter]
-	; dec a
-	; ld [wActiveCatCounter], a
+	; decreate cat counter
+	ld a, [wActiveCatCounter]
+	dec a
+	ld [wActiveCatCounter], a
 
 	jp UpdateEnemy_Loop
 
+DrawEnemies:
+	ld hl, wCats
+	ld a, [hl]
+	cp 0
+	jp z, DrawEnd
+
+	inc hl
+	ld a, [hli]
+
+	ld de, ENEMY_OAM + 1
+	ld [de], a
+	dec de
+
+	ld a, [hl]
+	ld [de], a
+
+
+	ld hl, wCats + PER_CAT_BYTES_COUNT
+	ld a, [hl]
+	cp 0
+	jp z, DrawEnd
+
+	inc hl
+	ld a, [hli]
+
+	ld de, ENEMY_OAM + 5
+	ld [de], a
+	dec de
+
+	ld a, [hl]
+	ld [de], a
+
+
+	ld hl, wCats + PER_CAT_BYTES_COUNT * 2
+	ld a, [hl]
+	cp 0
+	jp z, DrawEnd
+
+	inc hl
+	ld a, [hli]
+
+	ld de, ENEMY_OAM + 8 + 1
+	ld [de], a
+	dec de
+
+	ld a, [hl]
+	ld [de], a
+
+
+	ld hl, wCats + PER_CAT_BYTES_COUNT * 3
+	ld a, [hl]
+	cp 0
+	jp z, DrawEnd
+
+	inc hl
+	ld a, [hli]
+
+	ld de, ENEMY_OAM + 12 + 1
+	ld [de], a
+	dec de
+
+	ld a, [hl]
+	ld [de], a
+DrawEnd:
+	ret
 

@@ -29,7 +29,6 @@ InitGameState:
 
 	;;;;;;;;;;;;;;;;;;;;;; COPY TILES END
 
-    call ClearOam	
     call SetupPlayer
 	call SetupEnemies
 
