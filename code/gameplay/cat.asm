@@ -164,11 +164,10 @@ UpdateEnemy_PerCat_Update:
 
 UpdateEnemy_PerCat_CheckPlayerCollision:
 	push hl
-	ld a, 0
-	ld [wResult], a
 	ld a, [wPlayerPositionY]
 	ld d, a
 	ld a, [wCurrentCatY]
+	add a, 8
 	cp a, d
 	jp nz, .playCollisionCheck
 	; x coordinates
@@ -181,21 +180,27 @@ UpdateEnemy_PerCat_CheckPlayerCollision:
 	add a, 8 + 8
 	cp a, h
 	jp c, .playCollisionCheck; (a + 8 > h)
-	ld a, 1
-	ld [wResult], a
 
-.playCollisionCheck:
+	; check if player catch the cat
+	ld a, [wCurrentKeys]
+	and a, PADF_A
+	jp nz, HandlePlayerCatch
 
+.playCollisionCheck: ;; do zaorania
 	pop hl
-	ld a, [wResult]
-	cp a, 0
-	jp z, UpdateEnemy_PerCat_CheckGroundCollision ; no collision with player
+	jp UpdateEnemy_PerCat_CheckGroundCollision ; no collision with player
+
+HandlePlayerCatch:
+	pop hl
+	ld a, [wPlayerScore]
+	inc a
+	ld [wPlayerScore], a
+	;jp UpdateEnemy_PerCat_RemoveCat
 
 UpdateEnemy_PerCat_CheckGroundCollision:
 	ld a, [wCurrentCatY]
 	cp GROUND_LEVEL
 	jp z, UpdateEnemy_PerCat_RemoveCat
-
 	
 UpdateEnemy_PerCat_NoCollision:
 	push hl

@@ -1,18 +1,23 @@
 SECTION "PlayerVariables", WRAM0
 wPlayerPositionX:: dw
 wPlayerPositionY:: dw
+wPlayerScore:: dw
 
 section "Player", rom0
 
 SetupPlayer:
-	ld a, 16 + 8
+	ld a, 24 ;32
 	ld [wPlayerPositionX], a
+	ld a, 128 ;144
+	ld [wPlayerPositionY], a
+	ld a, 0
+	ld [wPlayerScore], a
 	ret
 
 UpdatePlayer:
 	call HandlePlayerInput
 
-	ld b, 128
+	ld b, 128 ;144
 	ld a, [wPlayerPositionX]
 	ld c, a
 	ld d, PLAYER_TILE

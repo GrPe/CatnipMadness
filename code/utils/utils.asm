@@ -40,39 +40,6 @@ MemCopy:
     jp nz, MemCopy
     ret;
 
-; Check collision between 2 objects
-; @param bc: 1st OAM
-; @param de: 2st OAM
-; returns wResults: 0 = no collision, 1 = collision
-CheckCollision:
-    ; y coordinates
-    ld a, [bc]
-    ld h, a
-    ld a, [de]
-    cp a, h
-    jp nz, .noCollision
-    ; x coordinates
-    inc bc
-    ld a, [bc]
-    ld h, a
-    inc de
-    ld a, [de]
-    sub a, 8
-    cp a, h
-    jp nc, .noCollision ; (a - 8 < h)
-    add a, 8 + 8
-    cp a, h
-    jp c, .noCollision ; (a + 8 > h)
-    ld a, 1
-    ld [wResult], a
-    ret
-
-.noCollision:
-    ld a, 0
-    ld [wResult], a
-    ret
-
-
 ;; From: https://github.com/pinobatch/libbet/blob/master/src/rand.z80#L34-L54
 ; Generates a pseudorandom 16-bit integer in BC
 ; using the LCG formula from cc65 rand():
@@ -96,7 +63,7 @@ rand:
     ret
 
 
-
+; from https://github.com/gbdev/gb-asm-tutorial/tree/master
 ClearRemainingSprites::
 
 

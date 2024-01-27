@@ -1,4 +1,4 @@
-section "Gameplay", rom0
+section "Init", rom0
 
 InitGameState:
     ;;;;;;;;;;;;;;;;;;;;; COPY TILES
