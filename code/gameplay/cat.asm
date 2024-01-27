@@ -228,10 +228,6 @@ UpdateEnemy_PerCat_RemoveCat:
 
 	;set inactive and clear x pos
 	ld a, 0
-	ld [hli], a
-	ld a, 0
-	ld [hli], a
-	ld a, 0
 	ld [hl], a
 
 	; decreate cat counter
