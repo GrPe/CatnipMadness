@@ -21,60 +21,6 @@ SetupEnemies:
 	ld b, 0
 	ld hl, wCats
 
-	ld hl, ENEMY_OAM
-	ld a, 0
-	ld [hli], a
-	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hli], a
-	xor a, a
-	ld [hl], a
-
-	ld hl, ENEMY_OAM + 4
-	ld a, 0
-	ld [hli], a
-	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hli], a
-	xor a, a
-	ld [hl], a
-
-	ld hl, ENEMY_OAM + 8
-	ld a, 0
-	ld [hli], a
-	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hli], a
-	xor a, a
-	ld [hl], a
-
-	ld hl, ENEMY_OAM + 12
-	ld a, 0
-	ld [hli], a
-	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hli], a
-	xor a, a
-	ld [hl], a
-
-	ld hl, ENEMY_OAM + 16
-	ld a, 0
-	ld [hli], a
-	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hli], a
-	xor a, a
-	ld [hl], a
-
-	ld hl, ENEMY_OAM + 20
-	ld a, 0
-	ld [hli], a
-	ld [hli], a
-	ld a, ENEMY_TILE
-	ld [hli], a
-	xor a, a
-	ld [hl], a
-
 SetupEnemies_Loop:
 
 	; Set as inactive
@@ -218,19 +164,32 @@ UpdateEnemy_PerCat_Update:
 
 UpdateEnemy_PerCat_CheckPlayerCollision:
 	push hl
-	ld bc, PLAYER_OAM
-	ld a, [wCurrentCatY]
+	ld a, 0
+	ld [wResult], a
+	ld a, [wPlayerPositionY]
 	ld d, a
+	ld a, [wCurrentCatY]
+	cp a, d
+	jp nz, .playCollisionCheck
+	; x coordinates
+	ld a, [wPlayerPositionX]
+	ld h, a
 	ld a, [wCurrentCatX]
-	ld e, a
-	call CheckCollision
+	sub a, 8
+	cp a, h
+	jp nc, .playCollisionCheck; (a - 8 < h)
+	add a, 8 + 8
+	cp a, h
+	jp c, .playCollisionCheck; (a + 8 > h)
+	ld a, 1
+	ld [wResult], a
+
+.playCollisionCheck:
+
 	pop hl
 	ld a, [wResult]
 	cp a, 0
 	jp z, UpdateEnemy_PerCat_CheckGroundCollision ; no collision with player
-
-	;!!! call damaga
-	;!!! update hp etc
 
 UpdateEnemy_PerCat_CheckGroundCollision:
 	ld a, [wCurrentCatY]
@@ -246,6 +205,15 @@ UpdateEnemy_PerCat_NoCollision:
 	ld [hli], a
 	ld a, [wCurrentCatY]
 	ld [hli], a
+
+	; render sprite
+	ld a, [wCurrentCatY]
+	ld b, a
+	ld a, [wCurrentCatX]
+	ld c, a
+	ld d, ENEMY_TILE
+	ld e, 0
+	call RenderSimpleSprite
 
 	pop hl
 
@@ -267,70 +235,3 @@ UpdateEnemy_PerCat_RemoveCat:
 	ld [wActiveCatCounter], a
 
 	jp UpdateEnemy_Loop
-
-DrawEnemies:
-	ld hl, wCats
-	ld a, [hl]
-	cp 0
-	jp z, DrawEnd
-
-	inc hl
-	ld a, [hli]
-
-	ld de, ENEMY_OAM + 1
-	ld [de], a
-	dec de
-
-	ld a, [hl]
-	ld [de], a
-
-
-	ld hl, wCats + PER_CAT_BYTES_COUNT
-	ld a, [hl]
-	cp 0
-	jp z, DrawEnd
-
-	inc hl
-	ld a, [hli]
-
-	ld de, ENEMY_OAM + 5
-	ld [de], a
-	dec de
-
-	ld a, [hl]
-	ld [de], a
-
-
-	ld hl, wCats + PER_CAT_BYTES_COUNT * 2
-	ld a, [hl]
-	cp 0
-	jp z, DrawEnd
-
-	inc hl
-	ld a, [hli]
-
-	ld de, ENEMY_OAM + 8 + 1
-	ld [de], a
-	dec de
-
-	ld a, [hl]
-	ld [de], a
-
-
-	ld hl, wCats + PER_CAT_BYTES_COUNT * 3
-	ld a, [hl]
-	cp 0
-	jp z, DrawEnd
-
-	inc hl
-	ld a, [hli]
-
-	ld de, ENEMY_OAM + 12 + 1
-	ld [de], a
-	dec de
-
-	ld a, [hl]
-	ld [de], a
-DrawEnd:
-	ret
-

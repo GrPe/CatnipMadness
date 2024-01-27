@@ -24,6 +24,7 @@ EntryPoint:
 
 	call InitSprObjLib
     call ClearOam	
+	call ResetShadowOAM
 
 	; Turn the LCD off
 	ld a, 0
@@ -63,11 +64,15 @@ WaitVBlank2:
 	call ResetShadowOAM
 
 	call UpdatePlayer
-	;call UpdateEnemy
+	call UpdateEnemy
 
-	call WaitVBlank
+	call ClearRemainingSprites
+
+	call WaitVBlank	
 
 	ld a, HIGH(wShadowOAM)
 	call hOAMDMA
+
+	call WaitVBlank
 
 	jp Main
