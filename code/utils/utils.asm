@@ -1,3 +1,9 @@
+section "rand_ram",wram0
+randstate: ds 4
+
+section "UtilsVariables", wram0
+wResult: db
+
 section "Utils", rom0
 
 ; Do not turn the LCD off outside of VBlank
@@ -35,7 +41,7 @@ MemCopy:
 ; Check collision between 2 objects
 ; @param bc: 1st OAM
 ; @param de: 2st OAM
-; returns h: 0 = no collision, 1 = collision
+; returns wResults: 0 = no collision, 1 = collision
 CheckCollision:
     ; y coordinates
     ld a, [bc]
@@ -56,10 +62,33 @@ CheckCollision:
     cp a, h
     jp c, .noCollision ; (a + 8 > h)
     ld a, 1
-    ld h, a
+    ld [wResult], a
     ret
 
 .noCollision:
     ld a, 0
     ld h, a
+    ret
+
+
+;; From: https://github.com/pinobatch/libbet/blob/master/src/rand.z80#L34-L54
+; Generates a pseudorandom 16-bit integer in BC
+; using the LCG formula from cc65 rand():
+; x[i + 1] = x[i] * 0x01010101 + 0xB3B3B3B3
+; @return A=B=state bits 31-24 (which have the best entropy),
+; C=state bits 23-16, HL trashed
+rand:
+    ; Add 0xB3 then multiply by 0x01010101
+    ld hl, randstate+0
+    ld a, [hl]
+    add a, $B3
+    ld [hl+], a
+    adc a, [hl]
+    ld [hl+], a
+    adc a, [hl]
+    ld [hl+], a
+    ld c, a
+    adc a, [hl]
+    ld [hl], a
+    ld b, a
     ret

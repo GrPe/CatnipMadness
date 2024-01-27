@@ -6,6 +6,7 @@ include "utils/input.asm"
 include "gameplay/gameplay.asm"
 include "gameplay/player.asm"
 include "gameplay/cat.asm"
+include "gameplay/sprawner.asm"
 
 SECTION "Header", ROM0[$100]
 

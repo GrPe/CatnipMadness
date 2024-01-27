@@ -14,13 +14,6 @@ SetupPlayer:
 
 UpdatePlayer:
 
-	;Collision Player vs Enemy
-	ld bc, PLAYER_OAM
-	ld de, ENEMY_OAM_0
-	call CheckCollision
-	ld a, h
-	ld [wTestColl], a
-
 ; Handle player movement
 .checkLeft:
 	ld a, [wCurrentKeys]
@@ -44,6 +37,3 @@ UpdatePlayer:
 	ret z
 	ld [_OAMRAM + 1], a
 	ret
-
-section "VAR PLAYER TEST", wram0
-wTestColl: db
