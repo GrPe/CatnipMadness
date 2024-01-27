@@ -208,14 +208,14 @@ UpdateEnemy_PerCat_NoCollision:
 UpdateEnemy_PerCat_RemoveCat:
 
 	;set inactive and clear x pos
-	ld a, 0
-	ld [hli], a
-	ld [hl], a
+	; ld a, 0
+	; ld [hli], a
+	; ld [hl], a
 
-	; decreate cat counter
-	ld a, [wActiveCatCounter]
-	dec a
-	ld [wActiveCatCounter], a
+	; ; decreate cat counter
+	; ld a, [wActiveCatCounter]
+	; dec a
+	; ld [wActiveCatCounter], a
 
 	jp UpdateEnemy_Loop
 
