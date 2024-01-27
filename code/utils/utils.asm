@@ -1,5 +1,12 @@
 section "Utils", rom0
 
+; Do not turn the LCD off outside of VBlank
+WaitVBlank:
+	ld a, [rLY]
+	cp 144
+	jp c, WaitVBlank
+    ret
+
 ;Clear OAMRAM
 ClearOam:
     ld a, 0
@@ -10,7 +17,6 @@ ClearOam:
     dec b
     jp nz, .clearOam
     ret
-
 
 ; Copy the tile data
 ; @param de: Source
