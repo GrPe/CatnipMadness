@@ -169,7 +169,7 @@ UpdateEnemy_PerCat_CheckPlayerCollision:
 	ld a, [wCurrentCatY]
 	add a, 8
 	cp a, d
-	jp nz, .playCollisionCheck
+	jp c, .playCollisionCheck
 	; x coordinates
 	ld a, [wPlayerPositionX]
 	ld h, a
@@ -186,7 +186,7 @@ UpdateEnemy_PerCat_CheckPlayerCollision:
 	and a, PADF_A
 	jp nz, HandlePlayerCatch
 
-.playCollisionCheck: ;; do zaorania
+.playCollisionCheck:
 	pop hl
 	jp UpdateEnemy_PerCat_CheckGroundCollision ; no collision with player
 

@@ -11,37 +11,11 @@ Tiles:
 	dw `00000000
 TilesEnd:
 
-Paddle:
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-    dw `13333331
-PaddleEnd:
+Player: incbin "graphics/human.2bpp"
+PlayerEnd:
 
 Cat: incbin "graphics/cat.2bpp"
 CatEnd:
-; Cat:
-;     dw `13333331
-;     dw `13333331
-;     dw `13333331
-;     dw `13333331
-;     dw `01333310
-;     dw `00133100
-;     dw `00111100
-;     dw `00011000
-; CatEnd:
 
 SECTION "Tilemap", ROM0
 

@@ -16,9 +16,9 @@ InitGameState:
 	call MemCopy
 
 	; Copy the tile data
-	ld de, Paddle
+	ld de, Player
 	ld hl, $8000
-	ld bc, PaddleEnd - Paddle
+	ld bc, PlayerEnd - Player
 	call MemCopy
 
 	; Copy the cat tiles
