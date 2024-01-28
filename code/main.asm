@@ -7,6 +7,7 @@ include "gameplay/init.asm"
 include "gameplay/player.asm"
 include "gameplay/cat.asm"
 include "gameplay/sprawner.asm"
+include "gameplay/score.asm"
 include "libs/gb-sprobj.asm"
 
 SECTION "Header", ROM0[$100]
@@ -41,7 +42,7 @@ EntryPoint:
 	ld [rLCDC], a
 
 	; During the first (blank) frame, initialize display registers
-	ld a, %00000000
+	ld a, %11100100
 	ld [rBGP], a
 
 	ld a, %11100100
@@ -60,6 +61,7 @@ WaitVBlank2:
 
 	;call DrawEnemies
 	call UpdateKeys
+	call DrawScore
 
 	call ResetShadowOAM
 

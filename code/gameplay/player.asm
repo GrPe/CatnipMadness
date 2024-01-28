@@ -1,7 +1,6 @@
 SECTION "PlayerVariables", WRAM0
 wPlayerPositionX:: dw
 wPlayerPositionY:: dw
-wPlayerScore:: dw
 
 section "Player", rom0
 

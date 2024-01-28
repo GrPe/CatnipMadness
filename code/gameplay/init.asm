@@ -3,9 +3,14 @@ section "Init", rom0
 InitGameState:
     ;;;;;;;;;;;;;;;;;;;;; COPY TILES
 
+	ld de, Font
+	ld hl, $9000
+	ld bc, FontEnd - Font
+	call MemCopy
+
 	; Copy the tile data
 	ld de, Tiles
-	ld hl, $9000
+	ld hl, $90B0
 	ld bc, TilesEnd - Tiles
 	call MemCopy
 
