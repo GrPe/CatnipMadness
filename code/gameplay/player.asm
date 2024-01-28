@@ -11,6 +11,8 @@ SetupPlayer:
 	ld [wPlayerPositionY], a
 	ld a, 0
 	ld [wPlayerScore], a
+	ld a, PLAYER_START_HP
+	ld [wPlayerHp], a
 	ret
 
 UpdatePlayer:

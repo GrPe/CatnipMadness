@@ -20,6 +20,9 @@ CatEnd:
 Pigeon: incbin "bin/golob.2bpp"
 PigeonEnd:
 
+Shit: incbin "bin/shit.2bpp"
+ShitEnd:
+
 WallLeft: incbin "bin/thesciana_left.2bpp"
 WallLeftEnd:
 
@@ -35,10 +38,13 @@ RoofEnd:
 Ground: incbin "bin/ground.2bpp"
 GroundEnd:
 
+Head: incbin "bin/head.2bpp"
+HeadEnd:
+
 SECTION "Tilemap", ROM0
 
 Tilemap:
-	db $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0
+	db $13, $13, $13, $13, $13, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0
 	db $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A,  0,0,0,0,0,0,0,0,0,0,0,0
 	db $0F, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $11,  0,0,0,0,0,0,0,0,0,0,0,0
 	db $0B, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0D,  0,0,0,0,0,0,0,0,0,0,0,0

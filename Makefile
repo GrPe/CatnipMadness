@@ -20,6 +20,8 @@ graphs:
 	rgbgfx graphics/thesciana_right.png -c "#9bbc0f,#8bac0f,#306230,#0f380f" --columns -o bin/thesciana_right.2bpp
 	rgbgfx graphics/roof.png -c "#9bbc0f,#8bac0f,#306230,#0f380f" --columns -o bin/roof.2bpp
 	rgbgfx graphics/ground.png -c "#9bbc0f,#8bac0f,#306230,#0f380f" --columns -o bin/ground.2bpp
+	rgbgfx graphics/shit.png -c "#9bbc0f,#8bac0f,#306230,#0f380f" --columns -o bin/shit.2bpp
+	rgbgfx graphics/head.png -c "#9bbc0f,#8bac0f,#306230,#0f380f" --columns -o bin/head.2bpp
 
 src:
 	rgbasm -L -o output/main.o code/main.asm --include code

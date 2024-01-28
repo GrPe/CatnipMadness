@@ -45,7 +45,14 @@ UpdatePigeon:
     ld b, PIGEON_CURRENT_Y
     ld c, a
     ld d, PIGEON_TILE
-    ld e, 0
+
+    ld a, [wPigeonDirection]
+    cp a, 0
+    jp z, .pEndDraw
+    ld a, 0
+    set 5, a
+.pEndDraw:
+    ld e, a
     call RenderSimpleSprite
     ret
 

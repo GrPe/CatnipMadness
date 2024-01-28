@@ -1,5 +1,6 @@
 section "ScoreVariables", wram0
 wPlayerScore:: dw
+wPlayerHp: dw
 
 section "Score", rom0
 
@@ -24,5 +25,25 @@ DrawScore:
     cp a, 0
     jp nz, .draw
 
+    ret
+
+DrawHp:
+    ld a, [wPlayerHp]
+    ld c, a
+    ld a, PLAYER_START_HP
+    sub a, c ; how many heads to hide
+    ld c, a
+    cp a, 0
+    jp z, .drawHpEnd
+
+    ld hl, $9804 ; 5th head
+.drawhp1:
+    ld a, BACKGROUND_TILE
+    ld [hld], a
+    dec c
+    ld a, c
+    cp a, 0
+    jp nz, .drawhp1
+.drawHpEnd:
     ret
 

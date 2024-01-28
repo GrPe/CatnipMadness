@@ -38,6 +38,12 @@ InitGameState:
 	ld bc, GroundEnd - Ground
 	call MemCopy
 
+	; Copy head
+	ld de, Head
+	ld hl, $9130
+	ld bc, HeadEnd - Head
+	call MemCopy
+
 	;;;;;;;;;;;;;;;;;;;;;; COPY TILES END
 	;;;;;;;;;;;;;;;;;;;;;; COPY TILEMAP
 
@@ -67,6 +73,12 @@ InitGameState:
 	ld hl, $8040
 	ld bc, PigeonEnd - Pigeon
 	call MemCopy
+
+	; Copy pigeon tiles
+	ld de, Shit
+	ld hl, $8060
+	ld bc, ShitEnd - Shit
+	call MemCopy
 	
 	;;;;;;;;;;;;;;;;;;;;;; COPY SPRITES END
 
@@ -75,5 +87,6 @@ InitGameState:
     call SetupPlayer
 	call SetupEnemies
 	call InitPigeon
+	call SetupShit
 
     ret

@@ -68,7 +68,7 @@ ClearRemainingSprites::
 
 
     ;Get our offset address in hl
-    ld a, _OAMRAM + 4 + 4 * MAX_CAT_COUNT
+    ld a, _OAMRAM + 4 + 4 * MAX_CAT_COUNT + 4 + 4 * PIGEON_SHIT_MAX_COUNT
     ld l, a
 
 ClearRemainingSprites_Loop::

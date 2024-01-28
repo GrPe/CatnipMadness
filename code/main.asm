@@ -9,6 +9,7 @@ include "gameplay/cat.asm"
 include "gameplay/sprawner.asm"
 include "gameplay/score.asm"
 include "gameplay/pigeon.asm"
+include "gameplay/pigeonshit.asm"
 include "libs/gb-sprobj.asm"
 
 SECTION "Header", ROM0[$100]
@@ -63,12 +64,14 @@ WaitVBlank2:
 	;call DrawEnemies
 	call UpdateKeys
 	call DrawScore
+	call DrawHp
 
 	call ResetShadowOAM
 
 	call UpdatePlayer
 	call UpdateEnemy
 	call UpdatePigeon
+	call UpdateShit
 
 	call ClearRemainingSprites
 
