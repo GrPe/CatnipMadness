@@ -182,9 +182,10 @@ UpdateEnemy_PerCat_CheckPlayerCollision:
 	jp c, .playCollisionCheck; (a + 8 > h)
 
 	; check if player catch the cat
-	ld a, [wCurrentKeys]
-	and a, PADF_A
-	jp nz, HandlePlayerCatch
+	; ld a, [wCurrentKeys]
+	; and a, PADF_A
+	; jp nz, HandlePlayerCatch
+	jp HandlePlayerCatch
 
 .playCollisionCheck:
 	pop hl

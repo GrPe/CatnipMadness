@@ -74,7 +74,7 @@ WaitVBlank2:
 	call UpdatePigeon
 
 	call ClearRemainingSprites
-
+	
 	call WaitVBlank	
 
 	ld a, HIGH(wShadowOAM)

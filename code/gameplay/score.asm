@@ -46,4 +46,3 @@ DrawHp:
     jp nz, .drawhp1
 .drawHpEnd:
     ret
-

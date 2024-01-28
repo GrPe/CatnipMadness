@@ -44,6 +44,24 @@ InitGameState:
 	ld bc, HeadEnd - Head
 	call MemCopy
 
+	; Copy Window
+	ld de, Window
+	ld hl, $9140
+	ld bc, WindowEnd - Window
+	call MemCopy
+
+	; Copy Brick
+	ld de, Bricks
+	ld hl, $9180
+	ld bc, BricksEnd - Bricks
+	call MemCopy
+
+	; Copy Brick
+	ld de, Somsiad
+	ld hl, $91C0
+	ld bc, SomsiadEnd - Somsiad
+	call MemCopy
+
 	;;;;;;;;;;;;;;;;;;;;;; COPY TILES END
 	;;;;;;;;;;;;;;;;;;;;;; COPY TILEMAP
 
