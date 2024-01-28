@@ -211,13 +211,27 @@ UpdateEnemy_PerCat_NoCollision:
 	ld a, [wCurrentCatY]
 	ld [hli], a
 
+    ;animation ^ ^
+    ld e, 0
+    ld a, [wCurrentCatY]
+    and a, %11110000
+    rrca
+    rrca
+    rrca 
+    rrca 
+    rrca
+    jp c, .drawShit
+
+    ld a, 0
+    set 5, a
+    ld e, a
+.drawShit:
 	; render sprite
 	ld a, [wCurrentCatY]
 	ld b, a
 	ld a, [wCurrentCatX]
 	ld c, a
 	ld d, ENEMY_TILE
-	ld e, 0
 	call RenderSimpleSprite
 
 	pop hl

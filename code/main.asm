@@ -70,8 +70,8 @@ WaitVBlank2:
 
 	call UpdatePlayer
 	call UpdateEnemy
-	call UpdatePigeon
 	call UpdateShit
+	call UpdatePigeon
 
 	call ClearRemainingSprites
 

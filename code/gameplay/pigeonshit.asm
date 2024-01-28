@@ -167,9 +167,9 @@ UpdateSHit_PerShit_CheckPlayerCollision:
 	; check if player got a shit
 	pop hl
 	ld a, [wPlayerHp]
-	dec a
     cp a, 0
     jp z, UpdateShit_PerShit_RemoveShit
+	dec a
 	ld [wPlayerHp], a
 	jp UpdateShit_PerShit_RemoveShit
 
@@ -190,13 +190,27 @@ UpdateShit_PerShit_NoCollision:
 	ld a, [wCurrentShitY]
 	ld [hli], a
 
+    ;animation ^ ^
+    ld e, 0
+    ld a, [wCurrentShitY]
+    and a, %11110000
+    rrca
+    rrca
+    rrca 
+    rrca 
+    rrca
+    jp c, .drawShit
+
+    ld a, 0
+    set 5, a
+    ld e, a
+.drawShit:
 	; render sprite
 	ld a, [wCurrentShitY]
 	ld b, a
 	ld a, [wCurrentShitX]
 	ld c, a
 	ld d, SHIT_TILE
-	ld e, 0
 	call RenderSimpleSprite
 
 	pop hl
