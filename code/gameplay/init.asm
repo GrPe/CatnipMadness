@@ -102,6 +102,7 @@ InitGameState:
 
 	; some init setup
 
+	call ClearSoftwareOam
     call SetupPlayer
 	call SetupEnemies
 	call InitPigeon

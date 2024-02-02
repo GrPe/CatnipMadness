@@ -3,6 +3,8 @@ include "assets/tiles.asm"
 include "utils/constants.asm"
 include "utils/utils.asm"
 include "utils/input.asm"
+include "utils/vblanks-utils.asm"
+include "utils/oam-utils.asm"
 include "gameplay/init.asm"
 include "gameplay/player.asm"
 include "gameplay/cat.asm"
@@ -23,11 +25,10 @@ EntryPoint:
     ld a, 0
     ld [rNR52], a
 
-	call WaitVBlank
+	call WaitForOneVBlank
 
 	call InitSprObjLib
-    call ClearOam	
-	call ResetShadowOAM
+    call ClearHardwareOam
 
 	; Turn the LCD off
 	ld a, 0
@@ -52,34 +53,33 @@ EntryPoint:
 
 
 Main:
-    ; Wait until it's *not* VBlank
-    ld a, [rLY]
-    cp 144
-    jp nc, Main
-WaitVBlank2:
-    ld a, [rLY]
-    cp 144
-    jp c, WaitVBlank2
+	; clean up, vblanks
+	call WaitForOneVBlank
 
-	;call DrawEnemies
-	call UpdateKeys
+	; background
 	call DrawScore
 	call DrawHp
 
+	; input
+	call UpdateKeys
+
+	; gb-sprobj-lib
 	call ResetShadowOAM
 
+	; game loop
 	call UpdatePlayer
+	call UpdatePigeon
 	call UpdateEnemy
 	call UpdateShit
-	call UpdatePigeon
 
-	call ClearRemainingSprites
+	;call ClearRemainingSprites
 	
-	call WaitVBlank	
+	;vblanks
+	call WaitForOneVBlank	
 
 	ld a, HIGH(wShadowOAM)
 	call hOAMDMA
 
-	call WaitVBlank
+	call WaitForOneVBlank
 
 	jp Main
