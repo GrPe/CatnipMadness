@@ -7,7 +7,7 @@ wActivePigeonCounter: db
 wUpdatePigeonCounter: db
 wNextShitXPosition: db
 
-wPigeons: ds PIGEON_SHIT_MAX_COUNT * PER_CAT_BYTES_COUNT
+wPigeons: ds PIGEON_SHIT_MAX_COUNT * PER_PIGEON_MISSILE_BYTE_COUNT
 
 section "PigeonShit", rom0
 
@@ -27,7 +27,7 @@ SetupShit_Loop:
 
 	; Increase the address
 	ld a, l
-	add a, PER_SHIT_BYTES_COUNT
+	add a, PER_PIGEON_MISSILE_BYTE_COUNT
 	ld l, a
 	ld a, h
 	adc a, 0
@@ -79,7 +79,7 @@ UpdateShit_Loop:
 
 	; go to next cat
 	ld a, l
-	add a, PER_SHIT_BYTES_COUNT
+	add a, PER_PIGEON_MISSILE_BYTE_COUNT
 	ld l, a
 	ld a, h
 	adc a, 0
@@ -111,8 +111,8 @@ UpdateShit_MakeNewShit:
 	ld [hli], a
 
 	; set y to 0
-	ld a, 0
-	ld [hli], a
+	ld a, PIGEON_CURRENT_Y
+	ld [hl], a
 
 	; clear variable - do not create next cat
 	ld a, 0
@@ -215,7 +215,7 @@ UpdateShit_PerShit_NoCollision:
 
 	pop hl
 
-	jp UpdateEnemy_Loop
+	jp UpdateShit_Loop
 
 UpdateShit_PerShit_RemoveShit:
 

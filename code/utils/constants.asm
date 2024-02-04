@@ -10,11 +10,6 @@ DEF CAT_BASE_SPEED EQU 1
 DEF MAX_CAT_COUNT EQU 5
 DEF MAX_CAT_SPAWN_DELAY EQU 50
 
-DEF PIGEON_CURRENT_Y EQU 0
-DEF PIGEON_SHIT_MAX_COUNT EQU 3
-DEF PIGEON_SHIT_SPAWN_DELEY EQU 65
-DEF PIGEON_SHIT_MAX_SPEED EQU 2
-
 DEF GROUND_LEVEL EQU 160
 
 
@@ -40,9 +35,15 @@ DEF cat_speed           RB 1
 DEF cat_state           RB 1
 DEF PER_CAT_BYTES_COUNT RB 0
 
-;Pigeon shit
+;Pigeon
+DEF PIGEON_CURRENT_Y EQU 0
+DEF PIGEON_SHIT_MAX_COUNT EQU 2
+DEF PIGEON_SHIT_SPAWN_DELEY EQU 55
+DEF PIGEON_SHIT_MAX_SPEED EQU 1
+
+;Pigeon missiles
 rsreset
-DEF shit_active             RB 1
-DEF shit_x_pos              RB 1
-DEF shit_y_pos              RB 1
-DEF PER_SHIT_BYTES_COUNT    RB 0
+DEF active                          RB 1
+DEF pos_x                           RB 1
+DEF pos_y                           RB 1
+DEF PER_PIGEON_MISSILE_BYTE_COUNT   RB 0

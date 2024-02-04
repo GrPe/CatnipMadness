@@ -71,8 +71,6 @@ Main:
 	call UpdatePigeon
 	call UpdateEnemy
 	call UpdateShit
-
-	;call ClearRemainingSprites
 	
 	;vblanks
 	call WaitForOneVBlank	

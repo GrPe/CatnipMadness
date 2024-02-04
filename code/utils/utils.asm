@@ -1,11 +1,5 @@
-section "rand_ram",wram0
+section "Utils Variables",wram0
 randstate: ds 4
-
-section "UtilsVariables", wram0
-wResult: db
-wLastOAMAddress:: dw
-
-
 
 section "Utils", rom0
 
@@ -44,33 +38,3 @@ rand:
     ld [hl], a
     ld b, a
     ret
-
-
-; from https://github.com/gbdev/gb-asm-tutorial/tree/master
-ClearRemainingSprites::
-
-
-    ;Get our offset address in hl
-    ld a, _OAMRAM + 4 + 4 * MAX_CAT_COUNT + 4 + 4 * PIGEON_SHIT_MAX_COUNT
-    ld l, a
-
-ClearRemainingSprites_Loop::
-    ld a, HIGH(wShadowOAM)
-    ld h, a
-
-    ld a, l
-    cp a, 160
-    ret nc
-    ret nc
-
-    ; Set the y and x to be 0
-    ld a, 0
-    ld [hli], a
-    ld [hld], a
-
-    ; Move up 4 bytes
-    ld a, l
-    add a, 4
-    ld l, a
-
-    jp ClearRemainingSprites_Loop

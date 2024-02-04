@@ -1,6 +1,3 @@
-; section "OAM Variables", wram0
-; wSpritesUsed:: db
-
 section "OAM Utils", rom0
 
 ; Clear hardware OAMRAM
@@ -23,10 +20,8 @@ ClearSoftwareOam:
     ld [hli], a
     dec b
     jp nz, .clearSoftwareOam_loop
-    ; xor a
-    ; ld [wSpritesUsed], a
 
-    ; git branch-sprobj-lib
+    ; gb-sprobj-lib
     ld a, HIGH(wShadowOAM)
     call hOAMDMA
     
