@@ -1,4 +1,4 @@
-section "PigeonVariables", wram0
+section "Pigeon variables", wram0
 wPigeonCurrentX: db
 wPigeonDirection: db ; 0 => left, 1 => right
 

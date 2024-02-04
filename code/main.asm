@@ -1,17 +1,23 @@
 INCLUDE "hardware.inc"
 include "assets/tiles.asm"
+
 include "utils/constants.asm"
 include "utils/utils.asm"
 include "utils/input.asm"
 include "utils/vblanks-utils.asm"
 include "utils/oam-utils.asm"
+
 include "gameplay/init.asm"
 include "gameplay/player.asm"
-include "gameplay/cat.asm"
-include "gameplay/sprawner.asm"
+include "gameplay/cats/cat.asm"
+include "gameplay/cats/cat-spawner.asm"
+
+include "gameplay/pigeon/pigeon-missile-spawner.asm"
+include "gameplay/pigeon/pigeon-missile.asm"
+include "gameplay/pigeon/pigeon.asm"
+
 include "gameplay/score.asm"
-include "gameplay/pigeon.asm"
-include "gameplay/pigeonshit.asm"
+
 include "libs/gb-sprobj.asm"
 
 SECTION "Header", ROM0[$100]
@@ -69,7 +75,7 @@ Main:
 	; game loop
 	call UpdatePlayer
 	call UpdatePigeon
-	call UpdateEnemy
+	call UpdateCats
 	call UpdateShit
 	
 	;vblanks

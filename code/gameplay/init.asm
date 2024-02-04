@@ -104,7 +104,7 @@ InitGameState:
 
 	call ClearSoftwareOam
     call SetupPlayer
-	call SetupEnemies
+	call InitCats
 	call InitPigeon
 	call SetupShit
 

@@ -1,4 +1,4 @@
-SECTION "PlayerVariables", WRAM0
+SECTION "Player variables", WRAM0
 wPlayerPositionX:: db
 wPlayerPositionY:: db
 wPlayerDirection:: db; 0 => right, 1 => left
