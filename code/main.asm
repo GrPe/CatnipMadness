@@ -8,15 +8,16 @@ include "utils/vblanks-utils.asm"
 include "utils/oam-utils.asm"
 
 include "gameplay/init.asm"
-include "gameplay/player.asm"
+
+include "gameplay/player/player.asm"
+include "gameplay/player/player-stats.asm"
+
 include "gameplay/cats/cat.asm"
 include "gameplay/cats/cat-spawner.asm"
 
 include "gameplay/pigeon/pigeon-missile-spawner.asm"
 include "gameplay/pigeon/pigeon-missile.asm"
 include "gameplay/pigeon/pigeon.asm"
-
-include "gameplay/score.asm"
 
 include "libs/gb-sprobj.asm"
 

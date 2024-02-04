@@ -1,29 +1,30 @@
-section "ScoreVariables", wram0
-wPlayerScore:: dw
-wPlayerHp: dw
+section "Player stats variables", wram0
+wPlayerScore: db
+wPlayerHp: db
 
-section "Score", rom0
+section "Player stats", rom0
 
 DrawScore:
     ld a, [wPlayerScore]
     ld c, a
-    ld hl, $980C
-    ld b, 8
+    ld hl, SCORE_LAST_POSITION
+    ld b, SCORE_SIZE
 
-.draw:
+.score_draw:
     rlc c
-    jp c, .draw1
-    ld a, $00
+    jp c, .score_draw_1
+.score_draw_0:
+    ld a, TILE_FONT_0
     ld [hli], a
-    jp .next
-.draw1:
-    ld a, $01
+    jp .score_draw_nextDigit
+.score_draw_1:
+    ld a, TILE_FONT_1
     ld [hli], a
-.next:
+.score_draw_nextDigit:
     dec b
     ld a, b
     cp a, 0
-    jp nz, .draw
+    jp nz, .score_draw
 
     ret
 

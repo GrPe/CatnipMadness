@@ -32,7 +32,7 @@ UpdatePlayer:
 	ld b, 128 ;144
 	ld a, [wPlayerPositionX]
 	ld c, a
-	ld d, PLAYER_TILE
+	ld d, PLAYER_SPRITE_TILE
 	call RenderSimpleSprite
 	ret
 
