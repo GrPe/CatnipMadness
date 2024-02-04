@@ -35,15 +35,15 @@ DrawHp:
     sub a, c ; how many heads to hide
     ld c, a
     cp a, 0
-    jp z, .drawHpEnd
+    jp z, .drawHp_end
 
-    ld hl, $9804 ; 5th head
-.drawhp1:
-    ld a, BACKGROUND_TILE
+    ld hl, HP_LAST_POSITION
+.drawHp_loop:
+    ld a, TILE_BACKGROUND
     ld [hld], a
     dec c
     ld a, c
     cp a, 0
-    jp nz, .drawhp1
-.drawHpEnd:
+    jp nz, .drawHp_loop
+.drawHp_end:
     ret
