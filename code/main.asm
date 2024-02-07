@@ -1,5 +1,4 @@
 INCLUDE "hardware.inc"
-include "assets/tiles.asm"
 
 include "utils/constants.asm"
 include "utils/utils.asm"

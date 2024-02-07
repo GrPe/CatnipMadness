@@ -1,77 +1,56 @@
-section "Init", rom0
+SECTION "Gameplay sprites tiles", ROM0
+
+Player: incbin "bin/human.2bpp"
+PlayerEnd:
+
+Cat: incbin "bin/cat.2bpp"
+CatEnd:
+
+Pigeon: incbin "bin/golob.2bpp"
+PigeonEnd:
+
+Shit: incbin "bin/shit.2bpp"
+ShitEnd:
+
+Head: incbin "bin/head.2bpp"
+HeadEnd:
+
+SECTION "Font tiles", rom0
+
+Font: incbin "bin/fonts/font.2bpp"
+FontEnd:
+
+SECTION "Gameplay background tiles", ROM0
+
+BlockTilemap: incbin "bin/backgrounds/blokTiles.tilemap"
+BlockTilemapEnd:
+	
+BlockTileData: incbin "bin/backgrounds/blokTiles.2bpp"
+BlockTileDataEnd:
+
+section "Init gameplay state", rom0
 
 InitGameState:
-    ;;;;;;;;;;;;;;;;;;;;; COPY TILES
+    ;;;;;;;;;;;;;;;;;;;;; COPY TILEMAP
+
+	ld de, BlockTileData
+	ld hl, $9000
+	ld bc, BlockTileDataEnd - BlockTileData
+	call MemCopy
+
+	; Copy the tilemap
+	ld de, BlockTilemap
+	ld hl, $9800
+	ld bc, BlockTilemapEnd - BlockTilemap
+	call MemCopy
+	
+	;;;;;;;;;;;;;;;;;;;;;; COPY FONTS
 
 	ld de, Font
-	ld hl, $9000
+	ld hl, $8800
 	ld bc, FontEnd - Font
 	call MemCopy
 
-	; Copy the tile data
-	ld de, Tiles
-	ld hl, $90A0
-	ld bc, TilesEnd - Tiles
-	call MemCopy
-
-	; Copy walls
-	ld de, WallLeft
-	ld hl, $90B0
-	ld bc, WallLeftEnd - WallLeft
-	call MemCopy
-
-	; Copy walls
-	ld de, WallRight
-	ld hl, $90D0
-	ld bc, WallRightEnd - WallRight
-	call MemCopy
-
-	; Copy roof
-	ld de, Roof
-	ld hl, $90F0
-	ld bc, RoofEnd - Roof
-	call MemCopy
-
-	; Copy ground
-	ld de, Ground
-	ld hl, $9120
-	ld bc, GroundEnd - Ground
-	call MemCopy
-
-	; Copy head
-	ld de, Head
-	ld hl, $9130
-	ld bc, HeadEnd - Head
-	call MemCopy
-
-	; Copy Window
-	ld de, Window
-	ld hl, $9140
-	ld bc, WindowEnd - Window
-	call MemCopy
-
-	; Copy Brick
-	ld de, Bricks
-	ld hl, $9180
-	ld bc, BricksEnd - Bricks
-	call MemCopy
-
-	; Copy Brick
-	ld de, Somsiad
-	ld hl, $91C0
-	ld bc, SomsiadEnd - Somsiad
-	call MemCopy
-
-	;;;;;;;;;;;;;;;;;;;;;; COPY TILES END
-	;;;;;;;;;;;;;;;;;;;;;; COPY TILEMAP
-
-	; Copy the tilemap
-	ld de, Tilemap
-	ld hl, $9800
-	ld bc, TilemapEnd - Tilemap
-	call MemCopy
-	
-	;;;;;;;;;;;;;;;;;;;;;; COPY TILEMAP END
 	;;;;;;;;;;;;;;;;;;;;;; COPY SPRITES
 
 	; Copy the tile data
@@ -98,9 +77,7 @@ InitGameState:
 	ld bc, ShitEnd - Shit
 	call MemCopy
 	
-	;;;;;;;;;;;;;;;;;;;;;; COPY SPRITES END
-
-	; some init setup
+	; init
 
 	call ClearSoftwareOam
     call SetupPlayer
