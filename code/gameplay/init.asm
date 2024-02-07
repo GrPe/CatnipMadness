@@ -1,19 +1,22 @@
 SECTION "Gameplay sprites tiles", ROM0
 
-Player: incbin "bin/human.2bpp"
+Player: incbin "bin/sprites/son.2bpp"
 PlayerEnd:
 
-Cat: incbin "bin/cat.2bpp"
+Cat: incbin "bin/sprites/cat.2bpp"
 CatEnd:
 
-Pigeon: incbin "bin/golob.2bpp"
-PigeonEnd:
+CatFall: incbin "bin/sprites/catFall.2bpp"
+CatFallEnd:
 
-Shit: incbin "bin/shit.2bpp"
+Shit: incbin "bin/sprites/shit.2bpp"
 ShitEnd:
 
-Head: incbin "bin/head.2bpp"
-HeadEnd:
+Pigeon: incbin "bin/sprites/pigeon.2bpp"
+PigeonEnd:
+
+Somsiad: incbin "bin/sprites/somsiad.2bpp"
+SomsiadEnd:
 
 SECTION "Font tiles", rom0
 
@@ -65,16 +68,28 @@ InitGameState:
 	ld bc, CatEnd - Cat
 	call MemCopy
 
-	; Copy pigeon tiles
-	ld de, Pigeon
+	; Copy the falling cat tiles
+	ld de, CatFall
 	ld hl, $8040
-	ld bc, PigeonEnd - Pigeon
+	ld bc, CatFallEnd - CatFall
 	call MemCopy
 
 	; Copy pigeon tiles
-	ld de, Shit
+	ld de, Pigeon
 	ld hl, $8060
+	ld bc, PigeonEnd - Pigeon
+	call MemCopy
+
+	; Copy shit tiles
+	ld de, Shit
+	ld hl, $8080
 	ld bc, ShitEnd - Shit
+	call MemCopy
+
+	; Copy somsiad tiles
+	ld de, Somsiad
+	ld hl, $80A0
+	ld bc, SomsiadEnd - Somsiad
 	call MemCopy
 	
 	; init
