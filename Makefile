@@ -31,7 +31,7 @@ $(GENSPRITES)/cat.2bpp: $(SOURCESPRITES)/cat.png | $(GENSPRITES)
 	rgbgfx -c "#ffffff,#88c070,#346856,#081820;" --columns -o $@ $<
 
 $(GENSPRITES)/catFall.2bpp: $(SOURCESPRITES)/catFall.png | $(GENSPRITES)
-	rgbgfx -c "#ffffff,#88c070,#346856,#081820;" --columns -o $@ $<
+	rgbgfx -c "#e0f8d0,#88c070,#346856,#081820;" --columns -o $@ $<
 
 $(GENSPRITES)/somsiad.2bpp: $(SOURCESPRITES)/somsiad.png | $(GENSPRITES)
 	rgbgfx -c "#ffffff,#e0f8d0,#88c070,#346856;" --columns -o $@ $<

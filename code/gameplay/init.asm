@@ -76,19 +76,19 @@ InitGameState:
 
 	; Copy pigeon tiles
 	ld de, Pigeon
-	ld hl, $8060
+	ld hl, $8080
 	ld bc, PigeonEnd - Pigeon
 	call MemCopy
 
 	; Copy shit tiles (2 sprites!)
 	ld de, Shit
-	ld hl, $8080
+	ld hl, $80A0
 	ld bc, ShitEnd - Shit
 	call MemCopy
 
 	; Copy somsiad tiles
 	ld de, Somsiad
-	ld hl, $80C0
+	ld hl, $80E0
 	ld bc, SomsiadEnd - Somsiad
 	call MemCopy
 	
@@ -98,6 +98,6 @@ InitGameState:
     call SetupPlayer
 	call InitCats
 	call InitPigeon
-	call SetupShit
+	call SetupPigeonMissile
 
     ret

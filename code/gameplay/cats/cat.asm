@@ -190,7 +190,7 @@ UpdateCats:
 	ld [hli], a
 
 .updateCat_draw_animation
-    ld e, 0
+    ld d, CAT_SPRITE_TILE
     ld a, [wCatsCurrentCatY]
     and a, %11110000
     rrca
@@ -198,18 +198,17 @@ UpdateCats:
     rrca 
     rrca 
     rrca
-    jp c, .updateCat_draw_animation_end
 
-    ld a, 0
-    set 5, a
-    ld e, a
+    jp c, .updateCat_draw_animation_end
+    ld d, CAT_SPRITE_TILE2
+	
 .updateCat_draw_animation_end:
 	; render sprite
 	ld a, [wCatsCurrentCatY]
 	ld b, a
 	ld a, [wCatsCurrentCatX]
 	ld c, a
-	ld d, CAT_SPRITE_TILE
+	ld e, 0
 	call RenderSimpleSprite
 
 	pop hl

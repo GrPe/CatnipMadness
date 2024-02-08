@@ -44,7 +44,7 @@ UpdatePigeon:
     ld a, [wPigeonCurrentX]
     ld b, PIGEON_CURRENT_Y
     ld c, a
-    ld d, PIGEON_TILE
+    ld d, PIGEON_SPRITE_TILE
 
     ld a, [wPigeonDirection]
     cp a, 0

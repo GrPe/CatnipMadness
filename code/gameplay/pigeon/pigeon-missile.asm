@@ -11,7 +11,7 @@ wPigeons: ds PIGEON_SHIT_MAX_COUNT * PER_PIGEON_MISSILE_BYTE_COUNT
 
 section "Pigeon missiles", rom0
 
-SetupShit:
+SetupPigeonMissile:
     ld a, 0
     ld [wPigeonMissileSpawnCounter], a
     ld [wPigeonActiveMissileCounter], a
@@ -20,7 +20,8 @@ SetupShit:
     ld b, 0
     ld hl, wPigeons
 
-SetupShit_Loop:
+.setupPigeonMissile_loop:
+
 	; Set as inactive
 	ld a, 0
 	ld [hl], a
@@ -41,10 +42,10 @@ SetupShit_Loop:
 	cp a, PIGEON_SHIT_MAX_COUNT
 	ret z
 
-	jp SetupShit_Loop
+	jp .setupPigeonMissile_loop
 	ret
 
-UpdateShit:
+UpdateMissile:
 
     call TryToSpawnMissile
 
@@ -64,9 +65,9 @@ UpdateShit:
 	ld l, a
 	ld a, HIGH(wPigeons)
 	ld h, a
-	jp UpdateShit_PerShit
+	jp .updateMissile_begin
 
-UpdateShit_Loop:
+.updateMissile_loop:
 
 	; if all cats updates = ret
 	ld a, [wPigeonUpdateMissileCounter]
@@ -85,20 +86,20 @@ UpdateShit_Loop:
 	adc a, 0
 	ld h, a
 
-UpdateShit_PerShit:
+.updateMissile_begin:
 
 	ld a, [hl]
 	cp 0 ; cat is not active
-	jp nz, UpdateShit_PerShit_Update
+	jp nz, .updateMissile_movement
 
-UpdateShit_MakeNewShit:
+.updateMissile_spawnNewMissile:
 
 	; check if shit need to be spawn
 	ld a, [wPigeonNextMissileXPosition]
 	cp 0
 
 	; if no, skip spawn section
-	jp z, UpdateShit_Loop
+	jp z, .updateMissile_loop
 
 	push hl
 
@@ -126,7 +127,7 @@ UpdateShit_MakeNewShit:
 	ld [wPigeonActiveMissileCounter], a
 
 
-UpdateShit_PerShit_Update:
+.updateMissile_movement:
     push hl
 	; get x pos
 	inc hl
@@ -145,43 +146,42 @@ UpdateShit_PerShit_Update:
 	ld [wPigeonCurrentMissileY], a	
 
 
-UpdateSHit_PerShit_CheckPlayerCollision:
+.updateMissile_PlayerCollision:
 	push hl
 	ld a, [wPlayerPositionY]
 	ld d, a
 	ld a, [wPigeonCurrentMissileY]
 	add a, 8
 	cp a, d
-	jp c, .splayCollisionCheck
+	jp c, .updateMissile_GroundCollision
 	; x coordinates
 	ld a, [wPlayerPositionX]
 	ld h, a
 	ld a, [wPigeonCurrentMissileX]
 	sub a, 8
 	cp a, h
-	jp nc, .splayCollisionCheck; (a - 8 < h)
+	jp nc, .updateMissile_GroundCollision; (a - 8 < h)
 	add a, 8 + 8
 	cp a, h
-	jp c, .splayCollisionCheck; (a + 8 > h)
+	jp c, .updateMissile_GroundCollision; (a + 8 > h)
 
-	; check if player got a shit
+.updateMissile_PlayerCollision_hp:
 	pop hl
 	ld a, [wPlayerHp]
     cp a, 0
-    jp z, UpdateShit_PerShit_RemoveShit
+    jp z, .updateMissile_remove
 	dec a
 	ld [wPlayerHp], a
-	jp UpdateShit_PerShit_RemoveShit
+	jp .updateMissile_remove
 
-.splayCollisionCheck: ; no collision
+.updateMissile_GroundCollision:	
 	pop hl
-
-UpdateShit_PerShit_CheckGroundCollision:
 	ld a, [wPigeonCurrentMissileY]
 	cp GROUND_LEVEL
-	jp z, UpdateShit_PerShit_RemoveShit
+	jp z, .updateMissile_remove
 	
-UpdateShit_PerShit_NoCollision:
+; no collision
+.updateMissile_draw:
 	push hl
 
 	inc hl
@@ -190,7 +190,7 @@ UpdateShit_PerShit_NoCollision:
 	ld a, [wPigeonCurrentMissileY]
 	ld [hli], a
 
-    ;animation ^ ^
+.updateMissile_draw_animation:
     ld d, SHIT_TILE
     ld a, [wPigeonCurrentMissileY]
     and a, %11110000
@@ -199,10 +199,11 @@ UpdateShit_PerShit_NoCollision:
     rrca 
     rrca 
     rrca
-    jp c, .drawShit
 
+    jp c, .updateMissile_draw_animation_end
     ld d, SHIT_TILE2
-.drawShit:
+
+.updateMissile_draw_animation_end:
 	; render sprite
 	ld a, [wPigeonCurrentMissileY]
 	ld b, a
@@ -213,9 +214,9 @@ UpdateShit_PerShit_NoCollision:
 
 	pop hl
 
-	jp UpdateShit_Loop
+	jp .updateMissile_loop
 
-UpdateShit_PerShit_RemoveShit:
+.updateMissile_remove:
 
 	;set inactive and clear x pos
 	ld a, 0
@@ -226,5 +227,5 @@ UpdateShit_PerShit_RemoveShit:
 	dec a
 	ld [wPigeonActiveMissileCounter], a
 
-	jp UpdateShit_Loop
+	jp .updateMissile_loop
 

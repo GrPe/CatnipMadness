@@ -76,7 +76,7 @@ Main:
 	call UpdatePlayer
 	call UpdatePigeon
 	call UpdateCats
-	call UpdateShit
+	call UpdateMissile
 	
 	;vblanks
 	call WaitForOneVBlank	
