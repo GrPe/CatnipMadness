@@ -80,7 +80,7 @@ InitGameState:
 	ld bc, PigeonEnd - Pigeon
 	call MemCopy
 
-	; Copy shit tiles
+	; Copy shit tiles (2 sprites!)
 	ld de, Shit
 	ld hl, $8080
 	ld bc, ShitEnd - Shit
@@ -88,7 +88,7 @@ InitGameState:
 
 	; Copy somsiad tiles
 	ld de, Somsiad
-	ld hl, $80A0
+	ld hl, $80C0
 	ld bc, SomsiadEnd - Somsiad
 	call MemCopy
 	

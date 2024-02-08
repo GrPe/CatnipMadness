@@ -22,6 +22,7 @@ NEEDED_GRAPHICS = \
 	$(GENSPRITES)/son.2bpp \
 	$(GENSPRITES)/shit.2bpp \
 	$(GENFONTS)/font.2bpp \
+	$(GENBACKGROUND)/head.2bpp \
 	$(GENBACKGROUND)/blokTiles.tilemap
 
 all: $(NEEDED_GRAPHICS) $(BUILD)
@@ -36,16 +37,19 @@ $(GENSPRITES)/somsiad.2bpp: $(SOURCESPRITES)/somsiad.png | $(GENSPRITES)
 	rgbgfx -c "#ffffff,#e0f8d0,#88c070,#346856;" --columns -o $@ $<
 
 $(GENSPRITES)/pigeon.2bpp: $(SOURCESPRITES)/pigeon.png | $(GENSPRITES)
-	rgbgfx -c "#ffffff,#e0f8d0,#88c070,#346856;" --columns -o $@ $<
+	rgbgfx -c "#ffffff,#346856,#e0f8d0,#88c070;" --columns -o $@ $<
 
 $(GENSPRITES)/son.2bpp: $(SOURCESPRITES)/son.png | $(GENSPRITES)
 	rgbgfx -c "#ffffff,#88c070,#346856,#081820;" --columns -o $@ $<
 
 $(GENSPRITES)/shit.2bpp: $(SOURCESPRITES)/shit.png | $(GENSPRITES)
-	rgbgfx -c "#9bbc0f,#8bac0f,#306230,#0f380f" --columns -o $@ $<
+	rgbgfx -c "#e0f8d0,#88c070,#346856,#081820;" --columns -o $@ $<
 
 $(GENFONTS)/font.2bpp: $(SOURCEFONTS)/font.png | $(GENFONTS)
 	rgbgfx -c "#FFFFFF,#cbcbcb,#414141,#000000" --columns -o $@ $<
+
+$(GENBACKGROUND)/head.2bpp: $(SOURCETILEMAP)/head.png | $(GENBACKGROUND)
+	rgbgfx -c "#e0f8d0,#88c070,#346856,#081820;" --columns -o $@ $<
 
 $(GENBACKGROUND)/blokTiles.tilemap: $(SOURCETILEMAP)/blokTiles.png | $(GENBACKGROUND)
 	rgbgfx -c "#e0f8d0,#88c070,#346856,#081820;" \
@@ -71,6 +75,7 @@ $(BUILD): $(BUILD_DIR)
 	rgblink -o $(BUILD) $(BUILD_DIR)/main.o
 	rgblink -n $(BUILD_DIR)/game.sym $(BUILD_DIR)/main.o
 	rgbfix -v -p 0xFF $(BUILD)
+.PHONY: $(BUILD)
 
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
