@@ -31,19 +31,34 @@ DrawScore:
 DrawHp:
     ld a, [wPlayerHp]
     ld c, a
+    ld hl, HP_POSITION
+    cp a, 0
+    jp z, .drawHp_empty
+
+.drawHp_loop:
+    ld a, TILE_HEAD
+    ld [hli], a
+    dec c
+    ld a, c
+    cp a, 0
+    jp nz, .drawHp_loop
+
+.drawHp_empty:
+    ld a, [wPlayerHp]
+    ld c, a
     ld a, PLAYER_START_HP
     sub a, c ; how many heads to hide
     ld c, a
     cp a, 0
     jp z, .drawHp_end
 
-    ld hl, HP_LAST_POSITION
-.drawHp_loop:
+.drawHp_empty_loop:
     ld a, TILE_BACKGROUND
-    ld [hld], a
+    ld [hli], a
     dec c
     ld a, c
     cp a, 0
-    jp nz, .drawHp_loop
+    jp nz, .drawHp_empty_loop
+    
 .drawHp_end:
     ret

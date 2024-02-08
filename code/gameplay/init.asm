@@ -31,6 +31,9 @@ BlockTilemapEnd:
 BlockTileData: incbin "bin/backgrounds/blokTiles.2bpp"
 BlockTileDataEnd:
 
+HeadTileData: incbin "bin/backgrounds/head.2bpp"
+HeadTileDataEnd:
+
 section "Init gameplay state", rom0
 
 InitGameState:
@@ -40,6 +43,11 @@ InitGameState:
 	ld hl, $9000
 	ld bc, BlockTileDataEnd - BlockTileData
 	call MemCopy
+
+	ld de, HeadTileData
+	ld hl, $9000 + BlockTileDataEnd - BlockTileData
+	ld bc, HeadTileDataEnd - HeadTileData
+	call MemCopy 
 
 	; Copy the tilemap
 	ld de, BlockTilemap
