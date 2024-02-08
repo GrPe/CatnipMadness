@@ -191,7 +191,7 @@ UpdateMissile:
 	ld [hli], a
 
 .updateMissile_draw_animation:
-    ld d, SHIT_TILE
+    ld d, P_MISSILE_SPRITE
     ld a, [wPigeonCurrentMissileY]
     and a, %11110000
     rrca
@@ -201,7 +201,7 @@ UpdateMissile:
     rrca
 
     jp c, .updateMissile_draw_animation_end
-    ld d, SHIT_TILE2
+    ld d, P_MISSILE_SPRITE2
 
 .updateMissile_draw_animation_end:
 	; render sprite
