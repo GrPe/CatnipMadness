@@ -1,22 +1,22 @@
-section "PigeonShitVariable", wram0
-wCurrentShitY: db
-wCurrentShitX: db
+section "Pigeon missiles variables", wram0
+wPigeonCurrentMissileY: db
+wPigeonCurrentMissileX: db
 
-wPigeonSpawnCounter: db
-wActivePigeonCounter: db
-wUpdatePigeonCounter: db
-wNextShitXPosition: db
+wPigeonMissileSpawnCounter: db
+wPigeonActiveMissileCounter: db
+wPigeonUpdateMissileCounter: db
+wPigeonNextMissileXPosition: db
 
 wPigeons: ds PIGEON_SHIT_MAX_COUNT * PER_PIGEON_MISSILE_BYTE_COUNT
 
-section "PigeonShit", rom0
+section "Pigeon missiles", rom0
 
 SetupShit:
     ld a, 0
-    ld [wPigeonSpawnCounter], a
-    ld [wActivePigeonCounter], a
-    ld [wUpdatePigeonCounter], a
-    ld [wNextShitXPosition], a
+    ld [wPigeonMissileSpawnCounter], a
+    ld [wPigeonActiveMissileCounter], a
+    ld [wPigeonUpdateMissileCounter], a
+    ld [wPigeonNextMissileXPosition], a
     ld b, 0
     ld hl, wPigeons
 
@@ -46,19 +46,19 @@ SetupShit_Loop:
 
 UpdateShit:
 
-    call TryToMakeShit
+    call TryToSpawnMissile
 
     ; check if we have active shit
-	ld a, [wNextShitXPosition]
+	ld a, [wPigeonNextMissileXPosition]
 	ld b, a
-	ld a, [wActivePigeonCounter]
+	ld a, [wPigeonActiveMissileCounter]
 	or a, b
 	cp a, 0
 	ret z
 
 	; reset shit's update counter
 	ld a, 0
-	ld [wUpdatePigeonCounter], a
+	ld [wPigeonUpdateMissileCounter], a
 
 	ld a, LOW(wPigeons)
 	ld l, a
@@ -69,11 +69,11 @@ UpdateShit:
 UpdateShit_Loop:
 
 	; if all cats updates = ret
-	ld a, [wUpdatePigeonCounter]
+	ld a, [wPigeonUpdateMissileCounter]
 	inc a
-	ld [wUpdatePigeonCounter], a
+	ld [wPigeonUpdateMissileCounter], a
 
-	ld a, [wUpdatePigeonCounter]
+	ld a, [wPigeonUpdateMissileCounter]
 	cp a, PIGEON_SHIT_MAX_COUNT
 	ret nc
 
@@ -94,7 +94,7 @@ UpdateShit_PerShit:
 UpdateShit_MakeNewShit:
 
 	; check if shit need to be spawn
-	ld a, [wNextShitXPosition]
+	ld a, [wPigeonNextMissileXPosition]
 	cp 0
 
 	; if no, skip spawn section
@@ -107,7 +107,7 @@ UpdateShit_MakeNewShit:
 	ld [hli], a
 
 	; set x position to random one
-	ld a, [wNextShitXPosition]
+	ld a, [wPigeonNextMissileXPosition]
 	ld [hli], a
 
 	; set y to 0
@@ -116,14 +116,14 @@ UpdateShit_MakeNewShit:
 
 	; clear variable - do not create next cat
 	ld a, 0
-	ld [wNextShitXPosition], a
+	ld [wPigeonNextMissileXPosition], a
 
 	pop hl
 
 	; increase active cat counter
-	ld a, [wActivePigeonCounter]
+	ld a, [wPigeonActiveMissileCounter]
 	inc a
-	ld [wActivePigeonCounter], a
+	ld [wPigeonActiveMissileCounter], a
 
 
 UpdateShit_PerShit_Update:
@@ -132,7 +132,7 @@ UpdateShit_PerShit_Update:
 	inc hl
 	ld a, [hli]
 	ld b, a
-	ld [wCurrentShitX], a
+	ld [wPigeonCurrentMissileX], a
 
 	; get and increase y pos by speed
 	ld a, [hl]
@@ -142,21 +142,21 @@ UpdateShit_PerShit_Update:
 
 	pop hl
 	ld a, d
-	ld [wCurrentShitY], a	
+	ld [wPigeonCurrentMissileY], a	
 
 
 UpdateSHit_PerShit_CheckPlayerCollision:
 	push hl
 	ld a, [wPlayerPositionY]
 	ld d, a
-	ld a, [wCurrentShitY]
+	ld a, [wPigeonCurrentMissileY]
 	add a, 8
 	cp a, d
 	jp c, .splayCollisionCheck
 	; x coordinates
 	ld a, [wPlayerPositionX]
 	ld h, a
-	ld a, [wCurrentShitX]
+	ld a, [wPigeonCurrentMissileX]
 	sub a, 8
 	cp a, h
 	jp nc, .splayCollisionCheck; (a - 8 < h)
@@ -177,7 +177,7 @@ UpdateSHit_PerShit_CheckPlayerCollision:
 	pop hl
 
 UpdateShit_PerShit_CheckGroundCollision:
-	ld a, [wCurrentShitY]
+	ld a, [wPigeonCurrentMissileY]
 	cp GROUND_LEVEL
 	jp z, UpdateShit_PerShit_RemoveShit
 	
@@ -185,14 +185,14 @@ UpdateShit_PerShit_NoCollision:
 	push hl
 
 	inc hl
-	ld a, [wCurrentShitX]
+	ld a, [wPigeonCurrentMissileX]
 	ld [hli], a
-	ld a, [wCurrentShitY]
+	ld a, [wPigeonCurrentMissileY]
 	ld [hli], a
 
     ;animation ^ ^
-    ld e, 0
-    ld a, [wCurrentShitY]
+    ld d, SHIT_TILE
+    ld a, [wPigeonCurrentMissileY]
     and a, %11110000
     rrca
     rrca
@@ -201,16 +201,14 @@ UpdateShit_PerShit_NoCollision:
     rrca
     jp c, .drawShit
 
-    ld a, 0
-    set 5, a
-    ld e, a
+    ld d, SHIT_TILE2
 .drawShit:
 	; render sprite
-	ld a, [wCurrentShitY]
+	ld a, [wPigeonCurrentMissileY]
 	ld b, a
-	ld a, [wCurrentShitX]
-	ld c, a
-	ld d, SHIT_TILE
+	ld a, [wPigeonCurrentMissileX]
+	ld c, a	
+	ld e, 0
 	call RenderSimpleSprite
 
 	pop hl
@@ -224,9 +222,9 @@ UpdateShit_PerShit_RemoveShit:
 	ld [hl], a
 
 	; decreate cat counter
-	ld a, [wActivePigeonCounter]
+	ld a, [wPigeonActiveMissileCounter]
 	dec a
-	ld [wActivePigeonCounter], a
+	ld [wPigeonActiveMissileCounter], a
 
 	jp UpdateShit_Loop
 

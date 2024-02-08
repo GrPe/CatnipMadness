@@ -1,32 +1,32 @@
 section "Pigeon missile spawner", rom0
 
-TryToMakeShit:
+TryToSpawnMissile:
     ; increase spawn counter
-    ld a, [wPigeonSpawnCounter]
+    ld a, [wPigeonMissileSpawnCounter]
     inc a
-    ld [wPigeonSpawnCounter], a
+    ld [wPigeonMissileSpawnCounter], a
 
     ; if it's no time, ret
-    ld a, [wPigeonSpawnCounter]
+    ld a, [wPigeonMissileSpawnCounter]
     cp a, PIGEON_SHIT_SPAWN_DELEY
     ret c
 
     ; 
-    ld a, [wNextShitXPosition]
+    ld a, [wPigeonNextMissileXPosition]
     cp a, 0
     ret nz
 
     ; check if we hit cat limit
-    ld a, [wActivePigeonCounter]
+    ld a, [wPigeonActiveMissileCounter]
     cp a, PIGEON_SHIT_MAX_COUNT
     ret nc
 
     ; reset spawn counter
     ld a, 0
-    ld [wPigeonSpawnCounter], a
+    ld [wPigeonMissileSpawnCounter], a
 
     ld a, [wPigeonCurrentX]
-    ld [wNextShitXPosition], a
+    ld [wPigeonNextMissileXPosition], a
 
     ret
 
