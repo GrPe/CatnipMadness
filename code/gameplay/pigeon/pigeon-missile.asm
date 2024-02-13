@@ -148,13 +148,14 @@ UpdateMissile:
 
 .updateMissile_PlayerCollision:
 	push hl
+	; y coordinate
 	ld a, [wPlayerPositionY]
 	ld d, a
 	ld a, [wPigeonCurrentMissileY]
-	add a, 8
+	add a, 14
 	cp a, d
 	jp c, .updateMissile_GroundCollision
-	; x coordinates
+	; x coordinate
 	ld a, [wPlayerPositionX]
 	ld h, a
 	ld a, [wPigeonCurrentMissileX]
@@ -177,6 +178,7 @@ UpdateMissile:
 .updateMissile_GroundCollision:	
 	pop hl
 	ld a, [wPigeonCurrentMissileY]
+	add a, 6
 	cp GROUND_LEVEL
 	jp z, .updateMissile_remove
 	

@@ -149,13 +149,14 @@ UpdateCats:
 ;todo: extract function
 .updateCat_PlayerCollision:
 	push hl
+	; y coordinate
 	ld a, [wPlayerPositionY]
 	ld d, a
 	ld a, [wCatsCurrentCatY]
-	add a, 8
+	add a, 14
 	cp a, d
 	jp c, .updateCat_GroundCollision
-	; x coordinates
+	; x coordinate
 	ld a, [wPlayerPositionX]
 	ld h, a
 	ld a, [wCatsCurrentCatX]
