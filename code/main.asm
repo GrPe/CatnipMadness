@@ -18,6 +18,8 @@ include "gameplay/pigeon/pigeon-missile-spawner.asm"
 include "gameplay/pigeon/pigeon-missile.asm"
 include "gameplay/pigeon/pigeon.asm"
 
+include "gameplay/somsiad/somsiad.asm"
+
 include "libs/gb-sprobj.asm"
 
 SECTION "Header", ROM0[$100]
@@ -77,6 +79,7 @@ Main:
 	call UpdatePigeon
 	call UpdateCats
 	call UpdateMissile
+	call UpdateSomsiad
 	
 	;vblanks
 	call WaitForOneVBlank	

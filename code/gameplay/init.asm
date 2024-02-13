@@ -107,5 +107,6 @@ InitGameState:
 	call InitCats
 	call InitPigeon
 	call SetupPigeonMissile
+	call InitSomsiad
 
     ret

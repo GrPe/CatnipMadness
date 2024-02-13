@@ -15,6 +15,7 @@ DEF CAT_SPRITE_TILE2    EQU $06
 DEF PIGEON_SPRITE_TILE  EQU $08
 DEF P_MISSILE_SPRITE    EQU $0A
 DEF P_MISSILE_SPRITE2   EQU $0C
+DEF SOMSIAD_SPRITE      EQU $0E
 
 ; Tiles
 DEF TILE_FONT_0         EQU $80
@@ -53,3 +54,8 @@ DEF p_missile_active                RB 1
 DEF p_missile_x_pos                 RB 1
 DEF p_missile_y_pos                 RB 1
 DEF PER_PIGEON_MISSILE_BYTE_COUNT   RB 0
+
+; Somsiad
+DEF SOMSIAD_ANIMATION_DELEY EQU 66
+DEF SOMSIAD_X_POS           EQU 24
+DEF SOMSIAD_Y_POS           EQU 58
